@@ -65,7 +65,7 @@ export default {
   width: 100%;
   height: 100vh;
   margin: 0 auto;
-  background-image: url(../assets/dzbg.png);
+  background-image: url(../assets/dzbg.jpg);
   background-size: 100% 100%;
   background-repeat: no-repeat;
   position: relative;
@@ -117,5 +117,6 @@ export default {
 .tp > img {
   width: 18vh;
   height: 30vw;
+  margin-left: 4vw;
 }
 </style>

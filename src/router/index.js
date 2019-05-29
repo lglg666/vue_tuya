@@ -12,7 +12,8 @@ import dingzhi from '@/components/dingzhi'
 Vue.use(Router)
 
 export default new Router({
-  // mode: 'history',
+  mode: 'history',
+  base: '/graffiti/html5/',
   routes: [
     {
       path: '/',

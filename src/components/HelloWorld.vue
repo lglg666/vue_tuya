@@ -8,7 +8,7 @@
     </div>
     <div class="hobottom">
        <mu-flex class="demo-linear-progress">
-    <mu-linear-progress mode="determinate" :value="num"  :size="15" color="#ff9800"></mu-linear-progress>
+    <mu-linear-progress mode="determinate" :value="num"  :size="15" color="#ff9800" style="border-radius: 1rem;border: 1px solid;height:3.5vh"></mu-linear-progress>
   </mu-flex>
       <span>加载中...</span>
       <p>晨风（江苏）服装有限公司版权所有</p>
@@ -36,20 +36,20 @@ export default {
      console.log(this.$route.query.uid)
      if(this.$route.query.uid == undefined){
        console.log('uid空')
-      //  window.location.href='http://jtarget.cn/graffiti/public/index.php'
+       window.location.href='http://jtarget.cn/graffiti/public/index.php'
      }else{
        console.log('ok')
        window.localStorage.setItem('uid',this.$route.query.uid)
      }
     var timer = setInterval(() => {
-      this.num += 1;
+      this.num += 5;
       if (this.num == 100) {
         clearInterval(timer);
         this.$router.push({
           name:'index'
         });
       }
-    }, 50);
+    }, 60);
   }
 };
 </script>
@@ -78,7 +78,7 @@ export default {
   background: url(../assets/muban.png) no-repeat;;
   background-size: 100%;
   width: 100%;
-  height: 24rem;
+  height: 54vh;
 }
 .topcon img {
   width: 80%;
@@ -107,6 +107,6 @@ h2 {
   font-weight: normal;
 }
 .demo-linear-progress {
-  margin: 16px 0;
+  /* margin: 16px 0; */
 }
 </style>

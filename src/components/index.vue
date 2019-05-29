@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <div class="topimg" >
+    <div class="indtopimg" >
       <!-- <img :src="topimg" alt> -->
       <div class="img">
       <div class="img-bor" v-for="item in imglist" @click="doing(item.link)">
@@ -68,7 +68,7 @@ body {
     overflow-x: hidden;
 }
 
-.topimg {
+.indtopimg {
   background: url(../assets/xzmb.png) no-repeat;
   width: 100%;
   background-size: 100% 100%;
@@ -78,7 +78,7 @@ body {
        height: 78%;
     width: 82%;
     margin: 0 auto;
-    overflow: auto;
+    overflow-y: scroll;
     position: relative;
     top: 4rem;
 }

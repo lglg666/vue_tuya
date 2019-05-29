@@ -2,39 +2,41 @@
     <div class="hello">
     <div class="topimg" ref="topcanvas">
       <!-- <img :src="topimg" alt> -->
-      <div class="dddd"><img :src="image" @mousedown="canvasDown($event)" 
+      <div class="dddd" @mousedown="canvasDown($event)" 
         @mouseup="canvasUp($event)"
         @mousemove="canvasMove($event)"
         @touchstart="canvasDown($event)" 
         @touchend="canvasUp($event)"
-        @touchmove="canvasMove($event)" alt></div>
-   <canvas id="canvas" class="fl" ref="canvas"></canvas>
+        @touchmove="canvasMove($event)" ><img :src="image" alt ref='img'></div>
+   <canvas id="canvas" class="fl" ref="canvas" width="1000"height='1000'></canvas>
     </div>
     <div class="bottom">
         <div class="huaban">
             <div class="color" >
-                <div class="color-list" ref='colorlist'  v-for="item in colorlist" :style="{backgroundColor:item.color}" @click="setColor(item.color)">
+                <div class="color-list" ref='colorlist'  v-for="(item,index) in colorlist" :style="{backgroundColor:item.color,top:item.top}" :class="{'active1':ind1 === index}" @click="setColor(item.color,index)" style="position: relative">
                 </div>
         </div>
         </div>
+           <div class="button-wrapper"> 
+             <div @click="_nextClick"><img :src="right" alt ></div>
+          <div @click="_preClick"><img :src="left" alt   ></div>
+          
+          </div>
          <div class="muban">
             <div class="uill" v-for="(item,index) in utill" @click="setBrush(index)">
-         <img :src="item.img" alt>
+         <img :src="item.img" alt  :class="{'active':ind === index}">
          </div>
          </div>
-        <div class="button-wrapper"> 
-          <mu-button color="info" @click="_preClick">上一步</mu-button>
-           <mu-button color="info" @click="_nextClick">下一步</mu-button>
-          </div>
- 
+     
     <div class="ok">
-        <div class="btn" @click="getImage">
-          完成了！
-    </div>
-     <div class="btn2" @click="clear">
+      <div class="btn2" @click="clear">
        <img :src="laji" alt>
        <span>重做</span>
     </div>
+        <div class="btn" @click="getImage">
+          完成了！
+    </div>
+     
     </div>
     </div>
   </div>
@@ -48,6 +50,8 @@ import bi2 from "../assets/bi2.png";
 import bi3 from "../assets/bi3.png";
 import cha from "../assets/cha.png";
 import laji from "../assets/laji.png";
+import left from "../assets/left.png";
+import right from "../assets/right.png";
 export default {
   name: "Doodling",
   data() {
@@ -59,42 +63,58 @@ export default {
       bi2,
       bi3,
       laji,
+      left,
+      right,
+      ind: "",
+      ind1: "",
       colorlist: [
         {
-          color: "#000000"
+          color: "#000000",
+          top: "-1rem"
         },
         {
-          color: "#52096c"
+          color: "#52096c",
+          top: "1rem"
         },
         {
-          color: "#0469d1"
+          color: "#0469d1",
+          top: "2rem"
         },
         {
-          color: "#30c200"
+          color: "#30c200",
+          top: "1.5rem"
         },
         {
-          color: "#8c8fa2"
+          color: "#8c8fa2",
+          top: "0"
         },
         {
-          color: "#0349b1"
+          color: "#0349b1",
+          top: "-1.5rem"
         },
         {
-          color: "#ff0103"
+          color: "#ff0103",
+          top: "-1rem"
         },
         {
-          color: "#fc4001"
+          color: "#fc4001",
+          top: "1rem"
         },
         {
-          color: "#ff7f00"
+          color: "#ff7f00",
+          top: "2rem"
         },
         {
-          color: "#febe07"
+          color: "#febe07",
+          top: "1.5rem"
         },
         {
-          color: "#feff03"
+          color: "#feff03",
+          top: "0"
         },
         {
-          color: "#ffffff"
+          color: "#ffffff",
+          top: "-1.5rem"
         }
       ],
       utill: [
@@ -239,13 +259,14 @@ export default {
       this.preDrawAry.push(preData);
     },
     // 设置颜色
-    setColor(color) {
+    setColor(color, index) {
       this.config.lineColor = color;
+      this.ind1 = index;
     },
     // 设置笔刷大小
     setBrush(type) {
       console.log(type);
-
+      this.ind = type;
       if (type == 0) {
         this.config.lineWidth = 1;
         this.config.lineColor = "#303133";
@@ -270,26 +291,32 @@ export default {
       }
     },
     //点击下一步
-     _nextClick: function () {
-                if (this.nextDrawAry.length) {
-                    var popData = this.nextDrawAry.pop();
-                    var midData = this.middleAry[this.middleAry.length - this.nextDrawAry.length - 2];
-                    this.preDrawAry.push(midData);
-                    this.context.putImageData(popData, 0, 0);
-                }
-            },
+    _nextClick: function() {
+      if (this.nextDrawAry.length) {
+        var popData = this.nextDrawAry.pop();
+        var midData = this.middleAry[
+          this.middleAry.length - this.nextDrawAry.length - 2
+        ];
+        this.preDrawAry.push(midData);
+        this.context.putImageData(popData, 0, 0);
+      }
+    },
     // 生成图片
     getImage() {
       const self = this;
       const canvas = document.querySelector("#canvas");
       var img = new Image();
+      console.log(canvas.width, canvas.height);
       img.crossOrigin = "";
       img.src = window.localStorage.getItem("image");
       console.log(window.localStorage.getItem("image"));
       // https://i.loli.net/2019/05/23/5ce65cf1b4bd882413.png
       // window.localStorage.getItem("image")
       img.onload = function() {
-         self.context.globalAlpha = 0.5;
+        // self.context.globalAlpha = 1;
+        self.config.lineColor = "rgba(255, 255, 255, 0.5)";
+        // self.context.shadowColor = self.config.lineColor;
+        // self.context.strokeStyle = self.config.lineColor;
         self.context.drawImage(img, 0, 0, canvas.width, canvas.height);
         const src = canvas.toDataURL("image/png");
         console.log(src);
@@ -309,6 +336,14 @@ export default {
             window.localStorage.setItem(
               "tpid",
               eval("(" + response.data + ")").id
+            );
+            window.localStorage.setItem(
+              "pingyu",
+              eval("(" + response.data + ")").message
+            );
+            window.localStorage.setItem(
+              "pingyuname",
+              eval("(" + response.data + ")").name
             );
             self.$router.push({
               name: "share",
@@ -335,6 +370,15 @@ export default {
       this.context.shadowBlur = this.config.shadowBlur;
       this.context.shadowColor = this.config.lineColor;
       this.context.strokeStyle = this.config.lineColor;
+    },
+    Touch() {
+      document.body.addEventListener(
+        "touchmove",
+        function(e) {
+          e.preventDefault(); // 阻止默认的处理方式(阻止下拉滑动的效果)
+        },
+        { passive: false }
+      ); // passive 参数不能省略，用来兼容ios和android
     }
   },
 
@@ -348,6 +392,7 @@ export default {
     canvas.width = self.$refs.topcanvas.offsetWidth; //设定canvas的宽度
     canvas.height = self.$refs.topcanvas.offsetHeight; //设定canvas的高度
     console.log(self.context);
+    self.Touch();
   }
 };
 </script>
@@ -363,12 +408,12 @@ export default {
   overflow-x: hidden;
 }
 .topimg {
-  height: 22rem;
+  height: 45%;
   width: 78%;
   background: white;
   margin: 0 auto;
-  border-radius: 10px;
-  border: solid 1px #e4e4e4;
+  /* border-radius: 10px; */
+  /* border: solid 1px #e4e4e4; */
   /* margin-top: 1.5rem; */
 }
 .topimg > img {
@@ -384,11 +429,13 @@ export default {
   top: -1.5rem; */
   width: 100%;
   position: absolute;
-  top: 19.5rem;
+  top: 41vh;
+  height: 55%;
+  overflow: hidden;
 }
 .huaban {
   background: url(../assets/huaban.png) no-repeat;
-  height: 9rem;
+  height: 27vh;
   background-size: 100% auto;
   width: 100%;
 }
@@ -398,6 +445,8 @@ export default {
   background-size: 100% auto;
   width: 87%;
   margin: 0 auto;
+  position: relative;
+  top: -7vh;
 }
 .color {
   width: 100%;
@@ -407,12 +456,15 @@ export default {
   top: 3rem;
 }
 .color-list {
-  width: 10.333%;
-  height: 2.5rem;
+  width: 10.3vw;
+  height: 6vh;
   border-radius: 2.5rem;
   float: left;
   margin-left: 1.2rem;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #e0e0e0;
+  z-index: 99;
+  overflow: hidden;
 }
 .uill {
   height: 50%;
@@ -426,35 +478,42 @@ export default {
 }
 .uill > img {
   width: 100%;
+  pointer-events: none;
 }
 .ok {
   width: 100%;
   height: 4rem;
+  position: relative;
+  top: -7vh;
 }
 .btn {
   background: url(../assets/btn.png) no-repeat;
-  background-size: 100%;
-  width: 50%;
-  line-height: 4rem;
-  font-size: 2rem;
+  background-size: 100% 100%;
+  width: 41%;
+  line-height: 3.5rem;
+  font-size: 1.5rem;
   text-align: center;
   color: white;
-  float: left;
-  margin-left: 1rem
+  float: right;
+  margin-left: 1rem;
+  height: 100%;
 }
 .btn2 {
-  width: 34%;
-  line-height: 4rem;
-  font-size: 2rem;
-  text-align: center;
+  width: 24%;
+  line-height: 3rem;
+  font-size: 1.5rem;
   color: #606266;
-  float: left;
+  float: right;
   background: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   border-radius: 0.5rem;
+  height: 3rem;
+  margin-right: 2rem;
 }
 .btn2 img {
-  width: 40%;
+  width: 36%;
   height: 100%;
   /* padding-left: 1rem; */
 }
@@ -462,11 +521,34 @@ export default {
 .dddd {
   position: absolute;
   top: 0rem;
-  height: 22rem;
+  height: 45%;
   width: 78%;
 }
 .dddd img {
   width: 100%;
   height: 100%;
+  pointer-events: none;
+}
+.active {
+  width: 130% !important;
+}
+.active1 {
+  border: 1px solid red;
+}
+.button-wrapper {
+  overflow: hidden;
+  position: relative;
+  top: -6vh;
+}
+.button-wrapper > div > img {
+  pointer-events: none;
+}
+.button-wrapper :last-child {
+  width: 17vw;
+  float: left;
+}
+.button-wrapper :first-child {
+  width: 17vw;
+  float: right;
 }
 </style>

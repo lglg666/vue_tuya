@@ -29,8 +29,9 @@ export default {
       }
   },
   mounted() {
+    console.log(this.$route.query.imageurl)
     this.img = this.$route.query.imageurl;
-      this.dhcode =this.$route.query.dzid;
+    this.dhcode =this.$route.query.dzid;
   }
 };
 </script>

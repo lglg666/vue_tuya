@@ -6,7 +6,7 @@ import router from './router'
 import axios from "axios";
 import MuseUI from 'muse-ui';
 import 'muse-ui/dist/muse-ui.css';
-
+import wx from "weixin-js-sdk";
 Vue.use(MuseUI);
 
 

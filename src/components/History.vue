@@ -55,8 +55,7 @@ export default {
             this.$router.push({
               name: "dingzhi",
               query: {
-                imageurl:
-                  "http://jtarget.cn/graffiti/public" + this.$route.query.imageurl,
+                imageurl: this.$route.query.imageurl,
                 dzid: eval("(" + res.data + ")").id
               }
             });
@@ -72,6 +71,10 @@ export default {
   },
   mounted() {
     const self = this;
+    console.log(document.body.touchmove)
+   document.body.addEventListener('touchmove', function (e) {
+        e.preventDefault() // 阻止默认的处理方式(阻止下拉滑动的效果)
+    }, {passive: true}) // passive 参数不能省略，用来兼容ios和android
     self.axios
       .post(
         "http://jtarget.cn/graffiti/public/index.php?s=/index/Api/Historical",
@@ -110,17 +113,18 @@ export default {
   color: rgba(255, 255, 255, 1);
 }
 .image {
-  height: 65%;
+ height: 73%;
   width: 100%;
-  overflow: auto;
+  /* overflow: auto; */
+      overflow-y: scroll;
 }
 .image .img-bor {
-  width: 38%;
-  background: white;
-  height: 10rem;
-  border-radius: 1rem;
-  float: left;
-  margin: 1rem;
+     width: 37vw;
+    background: white;
+    height: 20vh;
+    border-radius: 1rem;
+    float: left;
+    margin: 1rem;
 }
 .image .img-bor img {
   width: 80%;
