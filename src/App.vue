@@ -11,6 +11,18 @@
 <script>
 export default {
   name: 'App',
+  methods:{
+ bgm: function(){ 
+     var audio = document.getElementById("music1");
+	 audio.play();
+  }
+},
+mounted(){
+  const self = this
+document.addEventListener("WeixinJSBridgeReady", function (){
+  self.bgm();
+}, false);
+}
 }
 </script>
 
